@@ -22,45 +22,61 @@ export const analyzeComposition = (
 
     const [x, y, width, height] = subject.bbox;
     const centerX = x + width / 2;
-    const centerY = y + height / 2;
+    // const centerY = y + height / 2; // Not strictly needed for all logic
 
-    // Rule of Thirds Grid Lines (approximate)
-    const thirdW = videoWidth / 3;
-    const thirdH = videoHeight / 3;
+    // Frame dimensions
+    const frameArea = videoWidth * videoHeight;
+    const subjectArea = width * height;
+    const areaRatio = subjectArea / frameArea;
 
-    // Check Size (Distance)
-    const areaRatio = (width * height) / (videoWidth * videoHeight);
-
-    // Logic for Distance
-    if (areaRatio < 0.10) {
-        return { text: 'Too far! Move closer or Zoom In (2x)', icon: 'zoom-in', color: 'text-blue-400' };
+    // 1. DISTANCE LOGIC
+    if (areaRatio < 0.15) {
+        return { text: 'Too far! Move Closer', icon: 'zoom-in', color: 'text-blue-400' };
     }
-    if (areaRatio > 0.6) {
-        return { text: 'Too close! Move back', icon: 'zoom-out', color: 'text-red-400' };
+    if (areaRatio > 0.7) {
+        return { text: 'Too close! Move Back', icon: 'zoom-out', color: 'text-red-400' };
     }
 
-    // Logic for Composition (Center or Thirds)
-    // For simplicity, let's guide to the center-middle for now, or the nearest third intersection
-    // Let's try to guide to the center for a basic portrait
-
-    const deadZoneX = videoWidth * 0.1; // 10% tolerance
-    const deadZoneY = videoHeight * 0.1;
-
+    // 2. CENTERING LOGIC (Horizontal)
+    const deadZoneX = videoWidth * 0.15;
     const targetX = videoWidth / 2;
-    const targetY = videoHeight / 2;
-
     const diffX = targetX - centerX;
-    const diffY = targetY - centerY;
 
     if (Math.abs(diffX) > deadZoneX) {
-        if (diffX > 0) return { text: 'Move Camera Left', icon: 'move-left', color: 'text-orange-400' };
-        return { text: 'Move Camera Right', icon: 'move-right', color: 'text-orange-400' };
+        if (diffX > 0) return { text: 'Move Left ⬅️', icon: 'move-left', color: 'text-orange-400' };
+        return { text: 'Move Right ➡️', icon: 'move-right', color: 'text-orange-400' };
     }
 
-    if (Math.abs(diffY) > deadZoneY) {
-        if (diffY > 0) return { text: 'Move Camera Up', icon: 'move-up', color: 'text-orange-400' };
-        return { text: 'Move Camera Down', icon: 'move-down', color: 'text-orange-400' };
+    // 3. HEADROOM LOGIC (Vertical)
+    // y is the top coordinate of the bbox.
+    // If y is very small, head is at the top edge.
+    // If y is large, there is lots of space above head.
+
+    const headroomRatio = y / videoHeight;
+
+    if (y < videoHeight * 0.05) {
+        return { text: 'Tilt Up (Head cut off)', icon: 'move-up', color: 'text-red-400' };
     }
 
-    return { text: 'Perfect! Shoot now!', icon: 'perfect', color: 'text-green-500' };
+    if (headroomRatio > 0.25) {
+        // Too much empty space above
+        return { text: 'Tilt Down (Too much headroom)', icon: 'move-down', color: 'text-orange-400' };
+    }
+
+    // 4. ANGLE / STYLE SUGGESTIONS
+    const subjectAspectRatio = height / width;
+
+    // Full body shot (Tall aspect ratio) -> Suggest lower angle for "long legs" effect
+    // We assume full body if aspect ratio is high and we are not too close
+    if (subjectAspectRatio > 2.0 && areaRatio < 0.5) {
+        return { text: 'Try Lower Angle (Longer Legs)', icon: 'perfect', color: 'text-purple-400' };
+    }
+
+    // Portrait/Selfie (Close up) -> Suggest higher angle for slimming effect
+    // If we are relatively close and aspect ratio is normal
+    if (areaRatio > 0.35) {
+        return { text: 'Try Higher Angle (Flattering)', icon: 'perfect', color: 'text-purple-400' };
+    }
+
+    return { text: 'Perfect! Shoot! 🔥', icon: 'perfect', color: 'text-green-500' };
 };
