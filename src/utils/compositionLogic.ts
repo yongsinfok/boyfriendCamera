@@ -4,6 +4,7 @@ export type Guidance = {
     text: string;
     icon?: 'move-left' | 'move-right' | 'move-up' | 'move-down' | 'zoom-in' | 'zoom-out' | 'perfect';
     color: string;
+    targetGridIndex?: number; // 0-8 index for the 3x3 grid
 };
 
 export const analyzeComposition = (
@@ -43,8 +44,8 @@ export const analyzeComposition = (
     const diffX = targetX - centerX;
 
     if (Math.abs(diffX) > deadZoneX) {
-        if (diffX > 0) return { text: 'Move Left ⬅️', icon: 'move-left', color: 'text-orange-400' };
-        return { text: 'Move Right ➡️', icon: 'move-right', color: 'text-orange-400' };
+        if (diffX > 0) return { text: 'Move Left ⬅️', icon: 'move-left', color: 'text-orange-400', targetGridIndex: 4 };
+        return { text: 'Move Right ➡️', icon: 'move-right', color: 'text-orange-400', targetGridIndex: 4 };
     }
 
     // 3. HEADROOM LOGIC (Vertical)
@@ -55,12 +56,12 @@ export const analyzeComposition = (
     const headroomRatio = y / videoHeight;
 
     if (y < videoHeight * 0.05) {
-        return { text: 'Tilt Up (Head cut off)', icon: 'move-up', color: 'text-red-400' };
+        return { text: 'Tilt Up (Head cut off)', icon: 'move-up', color: 'text-red-400', targetGridIndex: 4 };
     }
 
     if (headroomRatio > 0.25) {
         // Too much empty space above
-        return { text: 'Tilt Down (Too much headroom)', icon: 'move-down', color: 'text-orange-400' };
+        return { text: 'Tilt Down (Too much headroom)', icon: 'move-down', color: 'text-orange-400', targetGridIndex: 4 };
     }
 
     // 4. ANGLE / STYLE SUGGESTIONS
@@ -69,14 +70,14 @@ export const analyzeComposition = (
     // Full body shot (Tall aspect ratio) -> Suggest lower angle for "long legs" effect
     // We assume full body if aspect ratio is high and we are not too close
     if (subjectAspectRatio > 2.0 && areaRatio < 0.5) {
-        return { text: 'Try Lower Angle (Longer Legs)', icon: 'perfect', color: 'text-purple-400' };
+        return { text: 'Try Lower Angle (Longer Legs)', icon: 'perfect', color: 'text-purple-400', targetGridIndex: 4 };
     }
 
     // Portrait/Selfie (Close up) -> Suggest higher angle for slimming effect
     // If we are relatively close and aspect ratio is normal
     if (areaRatio > 0.35) {
-        return { text: 'Try Higher Angle (Flattering)', icon: 'perfect', color: 'text-purple-400' };
+        return { text: 'Try Higher Angle (Flattering)', icon: 'perfect', color: 'text-purple-400', targetGridIndex: 4 };
     }
 
-    return { text: 'Perfect! Shoot! 🔥', icon: 'perfect', color: 'text-green-500' };
+    return { text: 'Perfect! Shoot! 🔥', icon: 'perfect', color: 'text-green-500', targetGridIndex: 4 };
 };
